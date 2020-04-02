@@ -29,6 +29,6 @@ spec:
       containers:
       - name: flaskapp
         image: shawon10/flaskapp
-        imagePullPolicy: Never
+        imagePullPolicy: Always
         ports:
         - containerPort: 5000
