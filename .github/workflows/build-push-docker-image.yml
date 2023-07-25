@@ -38,4 +38,4 @@ jobs:
           #tags: ${{env.IMAGE_NAME}}:latest,${{env.IMAGE_NAME}}:${{env.IMAGE_TAG}}
           tags: |
             ${{env.IMAGE_NAME}}:${{env.IMAGE_TAG}}
-          #${{ github.ref == 'refs/heads/prod' && env.IMAGE_NAME}}:latest
+            ${{ github.ref == 'refs/heads/master' && env.IMAGE_NAME}}:latest
