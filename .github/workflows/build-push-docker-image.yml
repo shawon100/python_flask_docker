@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - dev
 
 jobs:
   docker:
@@ -39,3 +40,4 @@ jobs:
           tags: |
             ${{env.IMAGE_NAME}}:${{env.IMAGE_TAG}}
             ${{ github.ref == 'refs/heads/master' && env.IMAGE_NAME}}:latest
+
