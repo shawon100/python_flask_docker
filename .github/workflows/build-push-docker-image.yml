@@ -60,3 +60,4 @@ jobs:
             # docker stop backend-flask
             # docker rm backend-flask
             docker-compose up -d
+          '
