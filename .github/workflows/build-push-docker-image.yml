@@ -51,8 +51,8 @@ jobs:
         run: |
           echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
           ls
-          sed -i -e 's/IMAGE_TAG/'"$IMAGE_TAG"'/' ${{ github.workspace }}/docker-compose.yml
-          sed -i -e 's/DOCKER_REGISTRY/'"$IMAGE_NAME"'/' ${{ github.workspace }}/docker-compose.yml
+          sed -i -e 's|IMAGE_TAG|'"$IMAGE_TAG"'|' ${{ github.workspace }}/docker-compose.yml
+          sed -i -e 's|DOCKER_REGISTRY|'"$IMAGE_NAME"'|' ${{ github.workspace }}/docker-compose.yml
           scp -o StrictHostKeyChecking=no -i private_key.pem ${{ github.workspace }}/docker-compose.yml ${USER_NAME}@${HOSTNAME}:/tmp 
           ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} '
             
