@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Docker Image Name
-        run: echo "IMAGE_NAME=shawon10/python-flask-ci" >> $GITHUB_ENV
+        run: echo "IMAGE_NAME=shawon10/python-flask-cicd" >> $GITHUB_ENV
 
       - name: Docker Image Tag
         run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
@@ -41,3 +41,20 @@ jobs:
             ${{env.IMAGE_NAME}}:${{env.IMAGE_TAG}}
             ${{ github.ref == 'refs/heads/master' && env.IMAGE_NAME}}:latest
 
+      - name: Deploy on AWS EC2
+        env:
+          PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY  }}
+          HOSTNAME: ${{ secrets.HOSTNAME  }}
+          USER_NAME: ${{ secrets.USERNAME  }}
+        run: |
+          echo "$PRIVATE_KEY" > private_key.pem && chmod 600 private_key.pem
+          ls
+          sed -i -e 's/IMAGE_TAG/'"${{env.IMAGE_TAG}}"'/' ${{ github.workspace }}/docker-compose.yml
+          sed -i -e 's/DOCKER_REGISTRY/'"${{env.IMAGE_NAME}}"'/' ${{ github.workspace }}/docker-compose.yml
+          scp -o StrictHostKeyChecking=no -i private_key.pem ${{ github.workspace }}/docker-compose.yml ${USER_NAME}@${HOSTNAME}:/tmp 
+          ssh -o StrictHostKeyChecking=no -i private_key.pem ${USER_NAME}@${HOSTNAME} '
+            
+            cd /tmp
+            # docker stop backend-flask
+            # docker rm backend-flask
+            docker-compose up -d
