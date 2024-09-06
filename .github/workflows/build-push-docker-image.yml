@@ -17,7 +17,7 @@ jobs:
         run: echo "IMAGE_NAME=shawon10/python-flask-cicd" >> $GITHUB_ENV
 
       - name: Docker Image Tag
-        run: echo "IMAGE_TAG=$(git rev-perse --short HEAD)" >> $GITHUB_ENV
+        run: echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
